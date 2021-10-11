@@ -4,7 +4,7 @@ const app = express();
 
 const morgan = require('morgan');
 
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 require("dotenv").config();
 
@@ -20,18 +20,19 @@ mongoose.connect('mongodb+srv://node-rest-shop:'+ process.env.MONGO_ATLAS_PW +'@
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true
-} );
+});
 
 mongoose.Promise  = global.Promise;
 
 app.use(morgan('dev'));
 
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 app.use('/upload', express.static('upload/'));
-app.use('/products', productRoutes); 
 
+// Routes which should handle request
+app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/user', userRoutes);
 
@@ -61,6 +62,5 @@ app.use((error, req, res, next)=>{
     });
 
 });
-
 
 module.exports = app;
